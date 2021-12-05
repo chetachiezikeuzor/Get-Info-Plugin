@@ -63,7 +63,7 @@ export default function getInfoReact(stats: any): JSX.Element {
 
 	const fileTitle = {
 		gridColumn: "2/4",
-		"text-align": "center",
+		textAlign: "center" as "center",
 		padding: "0.45em 0 .85em 0",
 	};
 	const boldItem = {
