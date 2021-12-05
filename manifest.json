@@ -3,7 +3,7 @@
 	"name": "Get Info",
 	"version": "0.0.1",
 	"minAppVersion": "0.12.0",
-	"description": "A small menu that is tucked inside your status bar and shows helpful information for your chosen file 📄.",
+	"description": "Get Info is a plugin that tucks a menu inside your status bar and shows helpful information for your chosen file 📄.",
 	"author": "Obsidian",
 	"authorUrl": "https://obsidian.md",
 	"isDesktopOnly": true
