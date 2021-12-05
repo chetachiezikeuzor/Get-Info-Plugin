@@ -1,7 +1,7 @@
 import { App, Menu } from "obsidian";
 import GetInfoPlugin from "src/plugin/main";
 import { GetInfoSettings } from "src/settings/settingsData";
-import createSettings from "./getInfoReact";
+import getInfoReact from "./getInfoReact";
 import * as ReactDOM from "react-dom";
 export default function getInfoMenu(
 	app: App,
@@ -24,7 +24,7 @@ export default function getInfoMenu(
 		const menuDom = (menu as any).dom as HTMLElement;
 		menuDom.addClass("get-info-menu");
 		menuDom.setAttribute("draggable", "true");
-		ReactDOM.render(createSettings(stats), menuDom);
+		ReactDOM.render(getInfoReact(stats), menuDom);
 		menuDom.addEventListener("click", (e) => {
 			e.preventDefault();
 			e.stopImmediatePropagation();
