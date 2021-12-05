@@ -9,7 +9,7 @@ export interface GetInfoSettings {
 const DEFAULT_SETTINGS: GetInfoSettings = {
 	wordsPerMinute: "250",
 	wordsPerPage: "750",
-	footnotesIncluded: false,
+	footnotesIncluded: true,
 	spacesIncluded: false,
 	commentsIncluded: false,
 };

@@ -12,8 +12,6 @@ import {
 	getSentenceCount,
 	getWordCount,
 } from "../data/stats";
-import { makeCSS } from "src/ui/makeCSS";
-import getInfoReact from "src/ui/getInfoReact";
 
 export default class GetInfoPlugin extends Plugin {
 	stats: any;
@@ -23,19 +21,17 @@ export default class GetInfoPlugin extends Plugin {
 
 	async onload() {
 		addIcons();
+		console.log("Get Info v" + this.manifest.version + " loaded");
 		await this.loadSettings();
 		this.addSettingTab(new GetInfoSettingsTab(this.app, this));
 
 		this.registerEvent(
 			this.app.workspace.on("file-menu", async (menu, file: TFile) => {
 				if (file instanceof TFile) {
-					// && file.extension === "md"
 					menu.addItem((item) => {
-						const itemDom = (item as any).dom as HTMLElement;
 						item.setTitle(`Get file info`)
 							.setIcon("help")
 							.onClick(async () => {
-								//this.loadFile(file);
 								getInfoMenu(
 									this.app,
 									this,
@@ -89,36 +85,6 @@ export default class GetInfoPlugin extends Plugin {
 		});
 	}
 
-	async loadFile(file: TFile) {
-		if (!(this.app.vault.adapter instanceof FileSystemAdapter)) return;
-
-		const html = `<div style="height: 100%; width: 100%;">${getInfoReact(
-			this.calculateNoteStats(file)
-		)}</div>`;
-
-		const encoded = "data:text/html;charset=utf-8," + encodeURI(html);
-
-		if (!this.window) {
-			this.window = new remote.BrowserWindow({
-				webPreferences: {
-					webSecurity: false,
-				},
-				width: 276,
-				height: 380,
-				title: file.basename,
-				resizable: false,
-			});
-
-			this.window.webContents.insertCSS(makeCSS, {
-				cssOrigin: "author",
-			});
-
-			this.window.on("close", () => (this.window = null));
-		}
-		await this.window.loadURL(encoded);
-		this.window.moveTop();
-	}
-
 	codeMirror = (cm: any) => {
 		cm.on("change", this.calculateNoteStats());
 	};
@@ -131,12 +97,20 @@ export default class GetInfoPlugin extends Plugin {
 			fileCache = fileCache?.replace(/(^\\s\*)|(\\s\*$)/gi, "");
 			fileCache = fileCache?.replace(/\[ \]{2,}/gi, " ");
 			fileCache = fileCache?.replace(/\\n /, "\\n");
-			fileCache = removeMarkdown(fileCache, true);
-			!true ? removeFootnotes(fileCache) : fileCache;
+			fileCache = removeMarkdown(
+				fileCache,
+				!this.settings.commentsIncluded
+			);
+			!this.settings.footnotesIncluded
+				? removeFootnotes(fileCache)
+				: fileCache;
 			return {
 				fileName: fileData.basename,
 				wordCount: getWordCount(fileCache),
-				charCount: getCharacterCount(fileCache, true),
+				charCount: getCharacterCount(
+					fileCache,
+					this.settings.spacesIncluded
+				),
 				sentenceCount: getSentenceCount(fileCache),
 				readingTime:
 					getWordCount(fileCache) /
@@ -158,7 +132,9 @@ export default class GetInfoPlugin extends Plugin {
 		}
 	}
 
-	onunload() {}
+	onunload() {
+		console.log("Get Info unloaded");
+	}
 
 	async loadSettings() {
 		this.settings = Object.assign(

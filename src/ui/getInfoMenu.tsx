@@ -11,7 +11,6 @@ export default function getInfoMenu(
 ) {
 	const windowX = window.innerWidth;
 	const windowY = window.innerHeight;
-	const statusBarIconRect = plugin.statusBarIcon.getBoundingClientRect();
 	const menuExists = document.querySelector(".menu.get-info-menu");
 
 	if (!menuExists) {
