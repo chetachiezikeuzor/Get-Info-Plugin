@@ -1,4 +1,30 @@
-/* Sets all the text color to red! */
-body {
-    color: red;
+.giDonationSection {
+	width: 60%;
+	height: 50vh;
+	margin: 0 auto;
+	text-align: center;
+	color: var(--text-normal);
+}
+
+.get-infocontainer {
+	display: grid;
+	grid-template-columns: 1fr 116px 116px;
+}
+
+.get-info-item-1,
+.item-3,
+.item-4,
+.item-5 {
+	height: 68px;
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+}
+
+.item-3,
+.item-6 {
+	grid-column: 2/4;
+}
+
+.item-4 {
+	grid-column: 2/3;
 }
