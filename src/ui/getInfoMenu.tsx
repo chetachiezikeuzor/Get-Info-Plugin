@@ -3,12 +3,8 @@ import GetInfoPlugin from "src/plugin/main";
 import { GetInfoSettings } from "src/settings/settingsData";
 import getInfoReact from "./getInfoReact";
 import * as ReactDOM from "react-dom";
-export default function getInfoMenu(
-	app: App,
-	plugin: GetInfoPlugin,
-	settings: GetInfoSettings,
-	stats: any
-) {
+import { setAttributes } from "src/utils/setAttributes";
+export default function getInfoMenu(app: App, stats: any) {
 	const windowX = window.innerWidth;
 	const windowY = window.innerHeight;
 	const menuExists = document.querySelector(".menu.get-info-menu");
@@ -22,8 +18,9 @@ export default function getInfoMenu(
 		});
 
 		const menuDom = (menu as any).dom as HTMLElement;
-		menuDom.addClass("get-info-menu");
-		menuDom.setAttribute("draggable", "true");
+		setAttributes(menuDom, {
+			style: "padding: .48em .98em",
+		});
 		ReactDOM.render(getInfoReact(stats), menuDom);
 		menuDom.addEventListener("click", (e) => {
 			e.preventDefault();

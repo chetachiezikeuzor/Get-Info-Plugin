@@ -3,7 +3,7 @@ import { remote } from "electron";
 import addIcons from "src/icons/customIcons";
 import getInfoMenu from "src/ui/getInfoMenu";
 import { setAttributes } from "src/utils/setAttributes";
-import { Plugin, TFile, setIcon, FileSystemAdapter } from "obsidian";
+import { Plugin, TFile, setIcon } from "obsidian";
 import { GetInfoSettingsTab } from "../settings/settingsTab";
 import DEFAULT_SETTINGS, { GetInfoSettings } from "../settings/settingsData";
 import { removeFootnotes, removeMarkdown } from "src/data/stats";
@@ -32,12 +32,7 @@ export default class GetInfoPlugin extends Plugin {
 						item.setTitle(`Get file info`)
 							.setIcon("help")
 							.onClick(async () => {
-								getInfoMenu(
-									this.app,
-									this,
-									this.settings,
-									this.calculateNoteStats(file)
-								);
+								getInfoMenu(this.app, this.getFileStats(file));
 							});
 					});
 				}
@@ -62,12 +57,7 @@ export default class GetInfoPlugin extends Plugin {
 		setIcon(this.statusBarIcon, "help");
 
 		this.statusBarIcon.addEventListener("click", () => {
-			getInfoMenu(
-				this.app,
-				this,
-				this.settings,
-				this.calculateNoteStats()
-			);
+			getInfoMenu(this.app, this.getFileStats());
 		});
 
 		this.addCommand({
@@ -75,21 +65,16 @@ export default class GetInfoPlugin extends Plugin {
 			name: `See current file info`,
 			icon: `help`,
 			callback: async () => {
-				getInfoMenu(
-					this.app,
-					this,
-					this.settings,
-					this.calculateNoteStats()
-				);
+				getInfoMenu(this.app, this.getFileStats());
 			},
 		});
 	}
 
 	codeMirror = (cm: any) => {
-		cm.on("change", this.calculateNoteStats());
+		cm.on("change", this.getFileStats());
 	};
 
-	calculateNoteStats(file?: TFile) {
+	getFileStats(file?: TFile) {
 		let fileData = !file ? this.app.workspace.getActiveFile() : file;
 		if (fileData && fileData.extension == "md") {
 			//@ts-ignore

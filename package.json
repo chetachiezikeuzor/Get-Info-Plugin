@@ -27,6 +27,7 @@
 		"html-react-parser": "^1.4.1",
 		"moment": "^2.29.1",
 		"react": "^17.0.2",
-		"react-dom": "^17.0.2"
+		"react-dom": "^17.0.2",
+		"require-context": "^1.1.0"
 	}
 }
