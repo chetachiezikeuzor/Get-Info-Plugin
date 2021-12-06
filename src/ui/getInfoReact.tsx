@@ -79,7 +79,7 @@ export default function getInfoReact(stats: any): JSX.Element {
 	const gridItem = {
 		display: "grid",
 		fontSize: "16px",
-		padding: ".36em 0",
+		padding: ".66em 0",
 		gridTemplateColumns: "1fr",
 		borderTop: "1.5px solid var(--background-modifier-border)",
 	};
