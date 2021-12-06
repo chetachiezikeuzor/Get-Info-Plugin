@@ -3,7 +3,7 @@
 ![Get-Info-Plugin Downloads](https://img.shields.io/github/downloads/chetachiezikeuzor/Get-Info-Plugin/total.svg)
 ![Get-Info-Plugin Releases](https://img.shields.io/github/v/release/chetachiezikeuzor/Get-Info-Plugin)
 
-![Get Info](https://user-images.githubusercontent.com/79069364/144736913-f9b91547-523d-480a-ba24-8ce98a29800d.png)
+![Get Info Demo Header](https://user-images.githubusercontent.com/79069364/144931459-1556d9ba-64ae-467e-9f1c-b7c5f0f85c8f.png)
 
 ### Status: This plugin will be available in Obsidian plugin store once it has been accepted
 
