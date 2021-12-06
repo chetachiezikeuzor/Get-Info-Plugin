@@ -74,11 +74,12 @@ export default function getInfoReact(stats: any): JSX.Element {
 		lineHeight: "1.32em",
 		textOverflow: "ellipsis",
 		color: "var(--text-normal)",
+		marginBottom: "8px",
 	};
 	const gridItem = {
 		display: "grid",
 		fontSize: "16px",
-		padding: ".56em 0",
+		padding: ".36em 0",
 		gridTemplateColumns: "1fr",
 		borderTop: "1.5px solid var(--background-modifier-border)",
 	};
@@ -93,7 +94,8 @@ export default function getInfoReact(stats: any): JSX.Element {
 		fontWeight: "500",
 	};
 	const textMuted = {
-		fontSize: "14px",
+		fontSize: "12px",
+		fontWeight: "600",
 		color: "var(--text-muted)",
 	};
 
@@ -109,6 +111,15 @@ export default function getInfoReact(stats: any): JSX.Element {
 							<span style={Object.assign(fileTitle, boldItem)}>
 								{stats?.fileName}
 							</span>
+							<span
+								style={Object.assign(textMuted, {
+									width: "100%",
+									overflowX: "hidden",
+									textOverflow: "ellipsis",
+								})}
+							>
+								{(stats?.path).toUpperCase()}
+							</span>{" "}
 						</div>{" "}
 					</>
 					{stats?.extension == "md" ? (

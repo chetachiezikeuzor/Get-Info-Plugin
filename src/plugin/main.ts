@@ -89,6 +89,7 @@ export default class GetInfoPlugin extends Plugin {
 				? removeFootnotes(fileCache)
 				: fileCache;
 			return {
+				path: fileData.path,
 				fileName: fileData.basename,
 				wordCount: getWordCount(fileCache),
 				charCount: getCharacterCount(
@@ -108,6 +109,7 @@ export default class GetInfoPlugin extends Plugin {
 			};
 		} else if (fileData && fileData.extension) {
 			return {
+				path: fileData.path,
 				fileName: fileData.basename,
 				created: fileData.stat.ctime,
 				modified: fileData.stat.mtime,
