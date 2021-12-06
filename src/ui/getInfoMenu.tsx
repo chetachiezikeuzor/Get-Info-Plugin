@@ -18,6 +18,7 @@ export default function getInfoMenu(app: App, stats: any) {
 		});
 
 		const menuDom = (menu as any).dom as HTMLElement;
+		menuDom.addClass("get-info-menu");
 		setAttributes(menuDom, {
 			style: "padding: .48em .98em",
 		});

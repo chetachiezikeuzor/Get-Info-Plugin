@@ -65,7 +65,8 @@ export default class GetInfoPlugin extends Plugin {
 			name: `See current file info`,
 			icon: `help`,
 			callback: async () => {
-				getInfoMenu(this.app, this.getFileStats());
+				if (!document.querySelector(".menu.get-info-menu"))
+					getInfoMenu(this.app, this.getFileStats());
 			},
 		});
 	}
