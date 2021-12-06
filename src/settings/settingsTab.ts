@@ -130,6 +130,6 @@ const kofiButton = (link: string): HTMLElement => {
 	const a = createEl("a");
 	a.setAttribute("href", link);
 	a.addClass("buymeacoffee-chetachi-img");
-	a.innerHTML = `<img src="https://raw.githubusercontent.com/chetachiezikeuzor/MySnippets-Plugin/master/assets/kofi_pixel.png" height="50">`;
+	a.innerHTML = `<img src="https://raw.githubusercontent.com/chetachiezikeuzor/Get-Info-Plugin/master/assets/kofi_dark.png" height="50">`;
 	return a;
 };
