@@ -20,12 +20,12 @@ export function getWordCount(text: string): number {
 		].join("|"),
 		"g"
 	);
-	return text ? (text.match(pattern) || []).length : null;
+	return text ? (text?.match(pattern) || [])?.length : null;
 }
 
 export function getCharacterCount(text: any, charactersIncludeSpaces: boolean) {
-	if (charactersIncludeSpaces) return text.length;
-	return text ? text.replaceAll(" ", "").length : null;
+	if (charactersIncludeSpaces) return text?.length;
+	return text ? text?.replaceAll(" ", "").length : null;
 }
 
 export function getSentenceCount(text: string): number {
@@ -61,15 +61,15 @@ export function getPageCount(text: any) {}
 
 export function removeMarkdown(text: any, excludeComments: boolean) {
 	let plaintext = text
-		.replace(/`\$?=[^`]+`/g, "") //inline dataview
-		.replace(/^---\n.*?\n---\n/s, "") //YAML Header
-		.replace(/\!?\[(.+)\]\(.+\)/g, "$1") //URLs & Image Captions
-		.replace(/\*|_|\[\[|\]\]|\||==|~~|---|#|> |`/g, ""); //Markdown Syntax
+		?.replace(/`\$?=[^`]+`/g, "") //inline dataview
+		?.replace(/^---\n.*?\n---\n/s, "") //YAML Header
+		?.replace(/\!?\[(.+)\]\(.+\)/g, "$1") //URLs & Image Captions
+		?.replace(/\*|_|\[\[|\]\]|\||==|~~|---|#|> |`/g, ""); //Markdown Syntax
 
 	if (!excludeComments)
 		plaintext = plaintext
-			.replace(/<!--.*?-->/gs, "") //HTML comments
-			.replace(/%%.*?%%/gs, "");
+			?.replace(/<!--.*?-->/gs, "") //HTML comments
+			?.replace(/%%.*?%%/gs, "");
 	//Obsidian comments
 	else plaintext = plaintext.replace(/%%|<!--|-->/g, ""); //remove only comment syntax
 	return plaintext;
@@ -83,4 +83,11 @@ export function removeFootnotes(text: any) {
 
 export function cleanComments(text: string): string {
 	return text.replace(MATCH_COMMENT, "").replace(MATCH_HTML_COMMENT, "");
+}
+
+export function make1000(number: number) {
+	let numText = String(number);
+	if (number >= 1000)
+		numText = numText.slice(0, -3) + "," + numText.slice(-3);
+	return numText;
 }

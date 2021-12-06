@@ -1,6 +1,6 @@
 import * as React from "react";
 import parse from "html-react-parser";
-import { getReadingTime } from "src/data/stats";
+import { getReadingTime, make1000 } from "src/data/stats";
 import { fileIcons } from "src/icons/customIcons";
 
 export default function getInfoReact(stats: any): JSX.Element {
@@ -55,87 +55,80 @@ export default function getInfoReact(stats: any): JSX.Element {
 		? stats?.extension
 		: "unknown";
 
-	const gridItemStyle = {
-		alignItems: "center",
-		flexFlow: "column",
-		display: "flex",
-	};
-
-	const fileTitle = {
-		gridColumn: "2/4",
-		textAlign: "center" as "center",
-		padding: "0.45em 0 .85em 0",
-	};
-	const boldItem = {
-		fontWeight: "500",
-	};
-	const gridItem = {
-		display: "grid",
-		padding: ".86em 0",
-		gridTemplateColumns: "1fr",
-		borderTop: "1.5px solid var(--background-modifier-border)",
-	};
 	const getInfoContainer = {
 		display: "grid",
 		gridTemplateColumns: "1fr 116px 116px",
 	};
-	const textMuted = {
-		color: "var(--text-muted)",
+	const gridItemTitle = {
+		flexFlow: "column",
+		display: "flex",
+		gridColumn: "2/4",
+		alignItems: "center",
+		textAlign: "center" as "center",
+		padding: "0.45em 0 .85em 0",
 	};
-	const tOf4 = {
+	const fileTitle = {
+		width: "100%",
+		fontSize: "18px",
+		overFlow: "hidden",
+		overFlowX: "hidden",
+		lineHeight: "1.32em",
+		textOverflow: "ellipsis",
+		color: "var(--text-normal)",
+	};
+	const gridItem = {
+		display: "grid",
+		fontSize: "16px",
+		padding: ".56em 0",
+		gridTemplateColumns: "1fr",
+		borderTop: "1.5px solid var(--background-modifier-border)",
+	};
+	const twoOfFour = {
 		gridColumn: "2/4",
 	};
 
-	const tOf3 = {
+	const twoOfThree = {
 		gridColumn: "2/3",
 	};
+	const boldItem = {
+		fontWeight: "500",
+	};
+	const textMuted = {
+		fontSize: "14px",
+		color: "var(--text-muted)",
+	};
+
 	return (
 		<>
 			{!stats ? (
 				<div>No File is Open</div>
 			) : (
 				<div style={getInfoContainer}>
-					<div style={fileTitle}>
-						{" "}
-						<>
-							<span style={gridItemStyle}>
-								<span>{parse(fileIcons[iconType])}</span>
-								<span
-									style={Object.assign(
-										{
-											width: "100%",
-											fontSize: "18px",
-											overflow: "hidden",
-											overflowX: "hidden",
-											lineHeight: "1.32em",
-											textOverflow: "ellipsis",
-											color: "var(--text-normal)",
-										},
-										boldItem
-									)}
-								>
-									{stats?.fileName}
-								</span>
-							</span>{" "}
-						</>
-					</div>
+					<>
+						<div style={gridItemTitle}>
+							<span>{parse(fileIcons[iconType])}</span>
+							<span style={Object.assign(fileTitle, boldItem)}>
+								{stats?.fileName}
+							</span>
+						</div>{" "}
+					</>
 					{stats?.extension == "md" ? (
 						<>
-							<div style={Object.assign(tOf3, gridItem)}>
+							<div style={Object.assign(twoOfThree, gridItem)}>
 								{" "}
 								<span style={boldItem}>
-									{stats?.wordCount}
+									{make1000(stats?.wordCount)}
 								</span>{" "}
 								<span style={textMuted}>WORDS</span>{" "}
 							</div>
 							<div style={Object.assign(gridItem)}>
 								{" "}
 								<span style={boldItem}>
-									{stats?.charCount}
+									{make1000(stats?.charCount)}
 								</span>{" "}
 								<span style={textMuted}>CHARACTERS</span>{" "}
 							</div>
-							<div style={Object.assign(tOf3, gridItem)}>
+							<div style={Object.assign(twoOfThree, gridItem)}>
 								{" "}
 								<span style={boldItem}>
 									{parseFloat(stats?.pageCount.toFixed(2))}
@@ -153,12 +146,12 @@ export default function getInfoReact(stats: any): JSX.Element {
 					) : (
 						""
 					)}
-					<div style={Object.assign(tOf4, gridItem)}>
+					<div style={Object.assign(twoOfFour, gridItem)}>
 						{" "}
 						<span style={boldItem}>{dateModified}</span>{" "}
 						<span style={textMuted}>MODIFICATION DATE</span>{" "}
 					</div>
-					<div style={Object.assign(tOf4, gridItem)}>
+					<div style={Object.assign(twoOfFour, gridItem)}>
 						{" "}
 						<span style={boldItem}>{dateCreated}</span>{" "}
 						<span style={textMuted}>CREATION DATE</span>{" "}

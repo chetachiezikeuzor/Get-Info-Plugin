@@ -1,9 +1,7 @@
-import type { BrowserWindow } from "electron";
-import { remote } from "electron";
 import addIcons from "src/icons/customIcons";
 import getInfoMenu from "src/ui/getInfoMenu";
 import { setAttributes } from "src/utils/setAttributes";
-import { Plugin, TFile, setIcon } from "obsidian";
+import { Plugin, TFile, setIcon, MarkdownView } from "obsidian";
 import { GetInfoSettingsTab } from "../settings/settingsTab";
 import DEFAULT_SETTINGS, { GetInfoSettings } from "../settings/settingsData";
 import { removeFootnotes, removeMarkdown } from "src/data/stats";
@@ -17,7 +15,6 @@ export default class GetInfoPlugin extends Plugin {
 	stats: any;
 	settings: GetInfoSettings;
 	statusBarIcon: HTMLElement;
-	window: BrowserWindow;
 
 	async onload() {
 		addIcons();
@@ -32,7 +29,10 @@ export default class GetInfoPlugin extends Plugin {
 						item.setTitle(`Get file info`)
 							.setIcon("help")
 							.onClick(async () => {
-								getInfoMenu(this.app, this.getFileStats(file));
+								getInfoMenu(
+									this.app,
+									await this.getFileStats(file)
+								);
 							});
 					});
 				}
@@ -56,8 +56,8 @@ export default class GetInfoPlugin extends Plugin {
 		});
 		setIcon(this.statusBarIcon, "help");
 
-		this.statusBarIcon.addEventListener("click", () => {
-			getInfoMenu(this.app, this.getFileStats());
+		this.statusBarIcon.addEventListener("click", async () => {
+			getInfoMenu(this.app, await this.getFileStats());
 		});
 
 		this.addCommand({
@@ -65,20 +65,19 @@ export default class GetInfoPlugin extends Plugin {
 			name: `See current file info`,
 			icon: `help`,
 			callback: async () => {
-				getInfoMenu(this.app, this.getFileStats());
+				getInfoMenu(this.app, await this.getFileStats());
 			},
 		});
 	}
 
-	codeMirror = (cm: any) => {
-		cm.on("change", this.getFileStats());
+	codeMirror = async (cm: any) => {
+		cm.on("change", await this.getFileStats());
 	};
 
-	getFileStats(file?: TFile) {
+	async getFileStats(file?: TFile) {
 		let fileData = !file ? this.app.workspace.getActiveFile() : file;
-		if (fileData && fileData.extension == "md") {
-			//@ts-ignore
-			let fileCache = fileData?.unsafeCachedData;
+		let fileCache = await this.app.vault.cachedRead(fileData);
+		if (fileData && fileData?.extension == "md") {
 			fileCache = fileCache?.replace(/(^\\s\*)|(\\s\*$)/gi, "");
 			fileCache = fileCache?.replace(/\[ \]{2,}/gi, " ");
 			fileCache = fileCache?.replace(/\\n /, "\\n");
