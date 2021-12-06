@@ -70,8 +70,7 @@ export default function getInfoReact(stats: any): JSX.Element {
 	const fileTitle = {
 		width: "100%",
 		fontSize: "18px",
-		overFlow: "hidden",
-		overFlowX: "hidden",
+		overflowX: "hidden",
 		lineHeight: "1.32em",
 		textOverflow: "ellipsis",
 		color: "var(--text-normal)",
