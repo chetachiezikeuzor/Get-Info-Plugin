@@ -76,8 +76,8 @@ export default class GetInfoPlugin extends Plugin {
 
 	async getFileStats(file?: TFile) {
 		let fileData = !file ? this.app.workspace.getActiveFile() : file;
-		let fileCache = await this.app.vault.cachedRead(fileData);
 		if (fileData && fileData?.extension == "md") {
+			let fileCache = await this.app.vault.cachedRead(fileData);
 			fileCache = fileCache?.replace(/(^\\s\*)|(\\s\*$)/gi, "");
 			fileCache = fileCache?.replace(/\[ \]{2,}/gi, " ");
 			fileCache = fileCache?.replace(/\\n /, "\\n");
