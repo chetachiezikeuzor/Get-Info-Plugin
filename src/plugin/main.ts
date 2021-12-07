@@ -1,7 +1,7 @@
 import addIcons from "src/icons/customIcons";
 import getInfoMenu from "src/ui/getInfoMenu";
 import { setAttributes } from "src/utils/setAttributes";
-import { Plugin, TFile, setIcon, MarkdownView } from "obsidian";
+import { Plugin, TFile, setIcon } from "obsidian";
 import { GetInfoSettingsTab } from "../settings/settingsTab";
 import DEFAULT_SETTINGS, { GetInfoSettings } from "../settings/settingsData";
 import { removeFootnotes, removeMarkdown } from "src/data/stats";
@@ -20,6 +20,7 @@ export default class GetInfoPlugin extends Plugin {
 		addIcons();
 		console.log("Get Info v" + this.manifest.version + " loaded");
 		await this.loadSettings();
+		this.setupSnippetsStatusBarIcon();
 		this.addSettingTab(new GetInfoSettingsTab(this.app, this));
 
 		this.registerEvent(
@@ -38,11 +39,6 @@ export default class GetInfoPlugin extends Plugin {
 				}
 			})
 		);
-		this.app.workspace.onLayoutReady(() => {
-			setTimeout(() => {
-				this.setupSnippetsStatusBarIcon();
-			});
-		});
 	}
 
 	setupSnippetsStatusBarIcon() {
@@ -70,50 +66,43 @@ export default class GetInfoPlugin extends Plugin {
 		});
 	}
 
-	codeMirror = async (cm: any) => {
-		cm.on("change", await this.getFileStats());
-	};
-
 	async getFileStats(file?: TFile) {
-		let fileData = !file ? this.app.workspace.getActiveFile() : file;
-		if (fileData && fileData?.extension == "md") {
-			let fileCache = await this.app.vault.cachedRead(fileData);
-			fileCache = fileCache?.replace(/(^\\s\*)|(\\s\*$)/gi, "");
-			fileCache = fileCache?.replace(/\[ \]{2,}/gi, " ");
-			fileCache = fileCache?.replace(/\\n /, "\\n");
+		file = !file ? this.app.workspace.getActiveFile() : file;
+		if (file && file.extension == "md") {
+			let fileCache = await this.app.vault.cachedRead(file);
+			fileCache = fileCache.replace(/(^\\s\*)|(\\s\*$)/gi, "");
+			fileCache = fileCache.replace(/\[ \]{2,}/gi, " ");
+			fileCache = fileCache.replace(/\\n /, "\\n");
 			fileCache = removeMarkdown(
 				fileCache,
 				!this.settings.commentsIncluded
 			);
-			!this.settings.footnotesIncluded
-				? removeFootnotes(fileCache)
-				: fileCache;
+			if (!this.settings.footnotesIncluded)
+				fileCache = removeFootnotes(fileCache);
+			else fileCache;
+			let numWords = getWordCount(fileCache);
 			return {
-				path: fileData.path,
-				fileName: fileData.basename,
-				wordCount: getWordCount(fileCache),
+				path: file.path,
+				fileName: file.basename,
+				wordCount: numWords,
 				charCount: getCharacterCount(
 					fileCache,
 					this.settings.spacesIncluded
 				),
 				sentenceCount: getSentenceCount(fileCache),
-				readingTime:
-					getWordCount(fileCache) /
-					parseInt(this.settings.wordsPerMinute),
-				pageCount:
-					getWordCount(fileCache) /
-					parseInt(this.settings.wordsPerPage),
-				created: fileData.stat.ctime,
-				modified: fileData.stat.mtime,
-				extension: fileData.extension,
+				readingTime: numWords / parseInt(this.settings.wordsPerMinute),
+				pageCount: numWords / parseInt(this.settings.wordsPerPage),
+				created: file.stat.ctime,
+				modified: file.stat.mtime,
+				extension: file.extension,
 			};
-		} else if (fileData && fileData.extension) {
+		} else if (file && file.extension) {
 			return {
-				path: fileData.path,
-				fileName: fileData.basename,
-				created: fileData.stat.ctime,
-				modified: fileData.stat.mtime,
-				extension: fileData.extension,
+				path: file.path,
+				fileName: file.basename,
+				created: file.stat.ctime,
+				modified: file.stat.mtime,
+				extension: file.extension,
 			};
 		}
 	}

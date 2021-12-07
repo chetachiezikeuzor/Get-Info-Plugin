@@ -94,7 +94,7 @@ export default function getInfoReact(stats: any): JSX.Element {
 		fontWeight: "500",
 	};
 	const textMuted = {
-		fontSize: "12px",
+		fontSize: "13.5px",
 		fontWeight: "600",
 		color: "var(--text-muted)",
 	};
