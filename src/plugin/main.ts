@@ -79,7 +79,7 @@ export default class GetInfoPlugin extends Plugin {
 			);
 			if (!this.settings.footnotesIncluded)
 				fileCache = removeFootnotes(fileCache);
-			else fileCache;
+
 			let numWords = getWordCount(fileCache);
 			return {
 				path: file.path,
