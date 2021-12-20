@@ -82,10 +82,3 @@ export function removeFootnotes(text: any) {
 export function cleanComments(text: string): string {
 	return text.replace(MATCH_COMMENT, "").replace(MATCH_HTML_COMMENT, "");
 }
-
-export function make1000(number: number) {
-	let numText = String(number);
-	if (number >= 1000)
-		numText = numText.slice(0, -3) + "," + numText.slice(-3);
-	return numText;
-}

@@ -1,6 +1,6 @@
 import * as React from "react";
 import parse from "html-react-parser";
-import { getReadingTime, make1000 } from "src/data/stats";
+import { getReadingTime } from "src/data/stats";
 import { fileIcons } from "src/icons/customIcons";
 
 export default function getInfoReact(stats: any): JSX.Element {
@@ -127,14 +127,14 @@ export default function getInfoReact(stats: any): JSX.Element {
 							<div style={Object.assign(twoOfThree, gridItem)}>
 								{" "}
 								<span style={boldItem}>
-									{make1000(stats?.wordCount)}
+									{new Intl.NumberFormat().format(stats?.wordCount)}
 								</span>{" "}
 								<span style={textMuted}>WORDS</span>{" "}
 							</div>
 							<div style={Object.assign(gridItem)}>
 								{" "}
 								<span style={boldItem}>
-									{make1000(stats?.charCount)}
+									{new Intl.NumberFormat().format(stats?.charCount)}
 								</span>{" "}
 								<span style={textMuted}>CHARACTERS</span>{" "}
 							</div>
