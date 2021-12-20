@@ -43,14 +43,14 @@ export default function getInfoReact(stats: any): JSX.Element {
 		"txt",
 		"zip",
 	];
-	let dateModified =
-		new Date(stats?.modified).toDateString() +
-		" " +
-		new Date(stats?.modified).toLocaleTimeString();
-	let dateCreated =
-		new Date(stats?.created).toDateString() +
-		" " +
-		new Date(stats?.created).toLocaleTimeString();
+
+	// To use the user's default locale, pass an empty array
+	const dateTimeFormat = new Intl.DateTimeFormat([], {
+		dateStyle: "medium",
+		timeStyle: "short",
+	});
+	const dateModified = dateTimeFormat.format(stats?.modified);
+	const dateCreated = dateTimeFormat.format(stats?.created);
 	let iconType = fileTypes.includes(stats?.extension)
 		? stats?.extension
 		: "unknown";
